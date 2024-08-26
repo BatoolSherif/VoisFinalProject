@@ -1,24 +1,16 @@
 package com.example.voisfinalproject.ui
-
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -88,13 +80,38 @@ fun DetailsScreen(
 
                                 Spacer(modifier = Modifier.height(12.dp)) // Reduced space
 
-                                // Displaying user details
-                                UserDetailRow(icon = Icons.Default.Person, label = "Login:", value = user.login)
-                                UserDetailRow(icon = Icons.Default.Info, label = "ID:", value = (user.id ?: "N/A").toString())
-                                UserDetailRow(icon = Icons.Default.Info, label = "URL:", value = user.url ?: "N/A")
-                                UserDetailRow(icon = Icons.Default.AccountBox, label = "Followers URL:", value = user.followers_url)
-                                UserDetailRow(icon = Icons.Default.AccountBox, label = "Following URL:", value = user.following_url)
-                                UserDetailRow(icon = Icons.Default.Menu, label = "Repos URL:", value = user.repos_url)
+//
+                                UserDetailRow(label = "Login:", value = user.login)
+                                UserDetailRow(label = "ID:", value = user.id.toString())
+                                UserDetailRow(label = "Node ID:", value = user.node_id)
+                                UserDetailRow(label = "Avatar URL:", value = user.avatar_url)
+                                UserDetailRow(label = "URL:", value = user.url)
+                                UserDetailRow(label = "HTML URL:", value = user.html_url)
+                                UserDetailRow(label = "Followers URL:", value = user.followers_url)
+                                UserDetailRow(label = "Following URL:", value = user.following_url)
+                                UserDetailRow(label = "Gists URL:", value = user.gists_url)
+                                UserDetailRow(label = "Starred URL:", value = user.starred_url)
+                                UserDetailRow(label = "Subscriptions URL:", value = user.subscriptions_url)
+                                UserDetailRow(label = "Organizations URL:", value = user.organizations_url)
+                                UserDetailRow(label = "Repos URL:", value = user.repos_url)
+                                UserDetailRow(label = "Events URL:", value = user.events_url)
+                                UserDetailRow(label = "Received Events URL:", value = user.received_events_url)
+                                UserDetailRow(label = "Type:", value = user.type)
+                                UserDetailRow(label = "Site Admin:", value = user.site_admin.toString())
+                                UserDetailRow(label = "Name:", value = user.name ?: "N/A")
+                                UserDetailRow(label = "Company:", value = user.company ?: "N/A")
+                                UserDetailRow(label = "Blog:", value = user.blog ?: "N/A")
+                                UserDetailRow(label = "Location:", value = user.location ?: "N/A")
+                                UserDetailRow(label = "Email:", value = user.email ?: "N/A")
+                                UserDetailRow(label = "Hireable:", value = user.hireable?.toString() ?: "N/A")
+                                UserDetailRow(label = "Bio:", value = user.bio ?: "N/A")
+                                UserDetailRow(label = "Twitter Username:", value = user.twitter_username ?: "N/A")
+                                UserDetailRow(label = "Public Repos:", value = user.public_repos.toString())
+                                UserDetailRow(label = "Public Gists:", value = user.public_gists.toString())
+                                UserDetailRow(label = "Followers:", value = user.followers.toString())
+                                UserDetailRow(label = "Following:", value = user.following.toString())
+                                UserDetailRow(label = "Created At:", value = user.created_at)
+                                UserDetailRow(label = "Updated At:", value = user.updated_at)
                             }
                         }
                     }
@@ -108,7 +125,7 @@ fun DetailsScreen(
 
 // Custom composable for displaying user details with an icon
 @Composable
-fun UserDetailRow(icon: ImageVector, label: String, value: String) {
+fun UserDetailRow(label: String, value: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
