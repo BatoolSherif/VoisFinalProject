@@ -1,3 +1,6 @@
+package com.example.voisfinalproject.ui
+
+import MainViewModel
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -17,21 +20,29 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.navigation.NavController
 import com.example.voisfinalproject.data.GitHubUser
+import androidx.compose.ui.draw.shadow
+
 @Composable
-fun MainScreen(viewModel: MainViewModel = viewModel()) {
+fun MainScreen(
+    viewModel: MainViewModel = viewModel(),
+    navController: NavController
+) {
     var query by remember { mutableStateOf(TextFieldValue("")) }
     var selectedUser by remember { mutableStateOf<GitHubUser?>(null) }
 
     val focusManager = LocalFocusManager.current
+    val primaryColor = Color(0xFFd03a3b) // Define the color
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("GITHUB Users") },
-                backgroundColor = MaterialTheme.colors.primary,
+                backgroundColor = primaryColor, // Set color for AppBar
                 contentColor = Color.White
             )
         }
@@ -49,13 +60,18 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                val buttonWidth = 100.dp // Reduced width for the button
+                val textFieldWidth = 180.dp // Width for the text field
+                val reducedHeight = 36.dp // Decrease height for both the text field and button
+
                 BasicTextField(
                     value = query,
                     onValueChange = { query = it },
                     modifier = Modifier
-                        .weight(.5f)
-                        .border(BorderStroke(2.dp, Color.Blue))
-                        .padding(16.dp),
+                        .width(textFieldWidth) // Set width for the text field
+                        .height(reducedHeight) // Decrease height
+                        .border(BorderStroke(2.dp, primaryColor), RoundedCornerShape(8.dp)) // Border with rounded corners
+                        .padding(horizontal = 16.dp, vertical = 8.dp), // Adjust padding
                     textStyle = LocalTextStyle.current.copy(color = Color.Black)
                 )
 
@@ -67,9 +83,11 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                         focusManager.clearFocus() // Hide the keyboard
                     },
                     modifier = Modifier
-                        .width(120.dp) // Decrease width of the button
+                        .width(buttonWidth) // Reduced width for the button
+                        .height(reducedHeight), // Decrease height
+                    colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor) // Set color for Button
                 ) {
-                    Text("Search")
+                    Text("Search", color = Color.White) // Ensure text color contrasts with button color
                 }
             }
 
@@ -84,12 +102,14 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                         modifier = Modifier
                             .fillMaxWidth() // Make each card take full width
                             .padding(vertical = 4.dp) // Add spacing between cards
-                            .clickable { selectedUser = user },
+                            .clickable {
+                                navController.navigate("details/${user.login}")
+                            },
                         elevation = 4.dp
                     ) {
                         Row(
                             modifier = Modifier.padding(8.dp),
-                         verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Image(
                                 painter = rememberImagePainter(data = user.avatar_url),

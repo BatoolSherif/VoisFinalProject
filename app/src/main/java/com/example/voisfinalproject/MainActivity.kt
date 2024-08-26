@@ -1,57 +1,41 @@
 package com.example.voisfinalproject
-
-import MainScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.voisfinalproject.ui.theme.VoisFinalProjectTheme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.voisfinalproject.ui.DetailsScreen
+import com.example.voisfinalproject.ui.MainScreen
 
+//class MainActivity : ComponentActivity() {
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setContent {
+//            MainScreen()
+//        }
+//    }
+//}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen()
+                    val navController = rememberNavController()
+                    // Set up the navigation graph
+                    NavHost(navController = navController, startDestination = "main") {
+                        composable("main") {
+                            MainScreen(navController = navController)
+                        }
+                        composable("details/{username}") { backStackEntry ->
+                            val username = backStackEntry.arguments?.getString("username")
+                            username?.let {
+                                DetailsScreen(username = it)
+                            }
+                        }
+                    }
+
+
         }
     }
 }
-//class MainActivity : ComponentActivity() {
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
-//        setContent {
-//            VoisFinalProjectTheme {
-//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    Greeting(
-//                        name = "Android",
-//                        modifier = Modifier.padding(innerPadding)
-//                    )
-//                }
-//            }
-//        }
-//    }
-//}
-
-//@Composable
-//fun Greeting(name: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = "Hello $name!",
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    VoisFinalProjectTheme {
-//        Greeting("Android")
-//    }
-//}

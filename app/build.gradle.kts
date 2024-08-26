@@ -57,6 +57,7 @@ android {
 
 dependencies {
     implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation("androidx.navigation:navigation-compose:2.7.1")
     implementation("androidx.compose.ui:ui:1.5.1")
     implementation("androidx.compose.material:material:1.5.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
@@ -71,6 +72,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.protolite.well.known.types)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
