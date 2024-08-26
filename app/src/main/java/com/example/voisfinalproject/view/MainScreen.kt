@@ -29,6 +29,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.navigation.NavController
 import com.example.voisfinalproject.data.GitHubUser
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.unit.sp
+
 @Composable
 fun MainScreen(
     viewModel: MainViewModel = viewModel(),
@@ -65,41 +67,55 @@ fun MainScreen(
                 .padding(paddingValues)
                 .padding(16.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                val buttonWidth = 100.dp // Reduced width for the button
-                val textFieldWidth = 180.dp // Width for the text field
-                val reducedHeight = 36.dp // Decrease height for both the text field and button
-
-                BasicTextField(
-                    value = query,
-                    onValueChange = { query = it },
-                    modifier = Modifier
-                        .width(textFieldWidth) // Set width for the text field
-                        .height(reducedHeight) // Decrease height
-                        .border(BorderStroke(2.dp, primaryColor), RoundedCornerShape(8.dp)) // Border with rounded corners
-                        .padding(horizontal = 16.dp, vertical = 8.dp), // Adjust padding
-                    textStyle = LocalTextStyle.current.copy(color = Color.Black)
+                Text(
+                    text = "Enter GITHUB username you want to search for: ",
+                    style = MaterialTheme.typography.h6,
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Button(
-                    onClick = {
-                        viewModel.resetPagination()
-                        viewModel.searchUsers(query.text)
-                        focusManager.clearFocus() // Hide the keyboard
-                    },
-                    modifier = Modifier
-                        .width(buttonWidth) // Reduced width for the button
-                        .height(reducedHeight), // Decrease height
-                    colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor) // Set color for Button
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Text("Search", color = Color.White) // Ensure text color contrasts with button color
+                    val buttonWidth = 140.dp
+                    val textFieldWidth = 230.dp
+                    val reducedHeight = 48.dp
+
+                    BasicTextField(
+                        value = query,
+                        onValueChange = { query = it },
+                        modifier = Modifier
+                            .width(textFieldWidth)
+                            .height(reducedHeight)
+                            .border(BorderStroke(2.dp, primaryColor), RoundedCornerShape(8.dp))
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        textStyle = LocalTextStyle.current.copy(color = Color.Black, fontSize = 18.sp)
+                    )
+
+                    Button(
+                        onClick = {
+                            viewModel.resetPagination()
+                            viewModel.searchUsers(query.text)
+                            focusManager.clearFocus()
+                        },
+                        modifier = Modifier
+                            .width(buttonWidth)
+                            .height(reducedHeight),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor)
+                    ) {
+                        Text("Search", color = Color.White)
+                    }
                 }
             }
+
+
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -107,8 +123,8 @@ fun MainScreen(
                 items(users) { user ->
                     Card(
                         modifier = Modifier
-                            .fillMaxWidth() // Make each card take full width
-                            .padding(vertical = 4.dp) // Add spacing between cards
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
                             .clickable {
                                 navController.navigate("details/${user.login}")
                             },
@@ -129,7 +145,7 @@ fun MainScreen(
                             Spacer(modifier = Modifier.width(10.dp))
                             Column {
                                 Text(
-                                    text = user.id.toString(), // Display user ID above name
+                                    text = user.id.toString(),
                                     style = MaterialTheme.typography.body2.copy(color = Color.Gray)
                                 )
                                 Text(
