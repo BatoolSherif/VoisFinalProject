@@ -7,6 +7,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,7 +29,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.navigation.NavController
 import com.example.voisfinalproject.data.GitHubUser
 import androidx.compose.ui.draw.shadow
-
 @Composable
 fun MainScreen(
     viewModel: MainViewModel = viewModel(),
@@ -34,9 +36,19 @@ fun MainScreen(
 ) {
     var query by remember { mutableStateOf(TextFieldValue("")) }
     var selectedUser by remember { mutableStateOf<GitHubUser?>(null) }
+    val users by viewModel.users // Directly access the state
 
     val focusManager = LocalFocusManager.current
     val primaryColor = Color(0xFFd03a3b) // Define the color
+
+    val scrollState = rememberLazyListState()
+
+    LaunchedEffect(scrollState.firstVisibleItemIndex) {
+        val isAtBottom = scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == users.size - 1
+        if (isAtBottom) {
+            viewModel.searchUsers(query.text)
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -52,9 +64,6 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(16.dp)
-                .verticalScroll(rememberScrollState()), // Make the screen scrollable
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -79,6 +88,7 @@ fun MainScreen(
 
                 Button(
                     onClick = {
+                        viewModel.resetPagination()
                         viewModel.searchUsers(query.text)
                         focusManager.clearFocus() // Hide the keyboard
                     },
@@ -93,11 +103,8 @@ fun MainScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Display cards in a vertical column
-            Column(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                viewModel.users.value.forEach { user ->
+            LazyColumn(state = scrollState) {
+                items(users) { user ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth() // Make each card take full width
@@ -120,7 +127,16 @@ fun MainScreen(
                                 contentScale = ContentScale.Crop
                             )
                             Spacer(modifier = Modifier.width(10.dp))
-                            Text(text = user.login, style = MaterialTheme.typography.subtitle2)
+                            Column {
+                                Text(
+                                    text = user.id.toString(), // Display user ID above name
+                                    style = MaterialTheme.typography.body2.copy(color = Color.Gray)
+                                )
+                                Text(
+                                    text = user.login,
+                                    style = MaterialTheme.typography.subtitle2
+                                )
+                            }
                         }
                     }
                 }
@@ -140,3 +156,4 @@ fun MainScreen(
         }
     }
 }
+
