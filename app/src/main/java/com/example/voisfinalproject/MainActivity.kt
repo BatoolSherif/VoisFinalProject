@@ -8,14 +8,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.voisfinalproject.ui.DetailsScreen
 import com.example.voisfinalproject.ui.MainScreen
 
-//class MainActivity : ComponentActivity() {
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContent {
-//            MainScreen()
-//        }
-//    }
-//}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
