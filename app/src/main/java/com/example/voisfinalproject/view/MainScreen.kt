@@ -94,7 +94,7 @@ fun MainScreen(
                         modifier = Modifier
                             .width(textFieldWidth)
                             .height(reducedHeight)
-                            .border(BorderStroke(2.dp, primaryColor), RoundedCornerShape(8.dp))
+                            .border(BorderStroke(2.dp, primaryColor), RoundedCornerShape(12.dp))
                             .padding(horizontal = 16.dp, vertical = 8.dp),
                         textStyle = LocalTextStyle.current.copy(color = Color.Black, fontSize = 18.sp)
                     )
@@ -108,10 +108,12 @@ fun MainScreen(
                         modifier = Modifier
                             .width(buttonWidth)
                             .height(reducedHeight),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor)
+                        colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor),
+                        shape = RoundedCornerShape(12.dp) // Adjust the radius for roundness
                     ) {
                         Text("Search", color = Color.White)
                     }
+
                 }
             }
 
