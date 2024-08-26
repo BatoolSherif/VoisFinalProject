@@ -1,5 +1,6 @@
 package com.example.voisfinalproject.ui
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.voisfinalproject.viewmodel.DetailsViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -22,11 +24,11 @@ import androidx.navigation.NavController
 @Composable
 fun DetailsScreen(
     username: String,
-    navController: NavController, // Add NavController parameter
+    navController: NavController,
     detailsViewModel: DetailsViewModel = viewModel()
 ) {
     val userDetails by detailsViewModel.userDetails
-    val primaryColor = Color(0xFFd03a3b) // Define the color
+    val primaryColor = Color(0xFFd03a3b)
 
     LaunchedEffect(username) {
         detailsViewModel.fetchUserDetails(username)
@@ -35,8 +37,8 @@ fun DetailsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("User Details") },
-                backgroundColor = primaryColor, // Set color for AppBar
+                title = { Text("User Details", fontSize = 20.sp, fontWeight = FontWeight.Bold) },
+                backgroundColor = primaryColor,
                 contentColor = Color.White,
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
@@ -50,68 +52,67 @@ fun DetailsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(8.dp), // Reduced padding
+                .padding(16.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (userDetails != null) {
                 userDetails?.let { user ->
-                    // Scrollable content
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(8.dp), // Reduced padding
-                        verticalArrangement = Arrangement.spacedBy(12.dp) // Reduced spacing
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         item {
                             Column(
-                                modifier = Modifier.padding(8.dp), // Reduced padding
+                                modifier = Modifier.padding(16.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                // Rounded Avatar Image
                                 Image(
                                     painter = rememberImagePainter(user.avatar_url),
                                     contentDescription = null,
                                     modifier = Modifier
-                                        .size(80.dp) // Smaller size
+                                        .size(100.dp)
                                         .clip(CircleShape),
                                     contentScale = ContentScale.Crop
                                 )
 
-                                Spacer(modifier = Modifier.height(12.dp)) // Reduced space
+                                Spacer(modifier = Modifier.height(16.dp))
 
-//
-                                UserDetailRow(label = "Login:", value = user.login)
-                                UserDetailRow(label = "ID:", value = user.id.toString())
-                                UserDetailRow(label = "Node ID:", value = user.node_id)
-                                UserDetailRow(label = "Avatar URL:", value = user.avatar_url)
-                                UserDetailRow(label = "URL:", value = user.url)
-                                UserDetailRow(label = "HTML URL:", value = user.html_url)
-                                UserDetailRow(label = "Followers URL:", value = user.followers_url)
-                                UserDetailRow(label = "Following URL:", value = user.following_url)
-                                UserDetailRow(label = "Gists URL:", value = user.gists_url)
-                                UserDetailRow(label = "Starred URL:", value = user.starred_url)
-                                UserDetailRow(label = "Subscriptions URL:", value = user.subscriptions_url)
-                                UserDetailRow(label = "Organizations URL:", value = user.organizations_url)
-                                UserDetailRow(label = "Repos URL:", value = user.repos_url)
-                                UserDetailRow(label = "Events URL:", value = user.events_url)
-                                UserDetailRow(label = "Received Events URL:", value = user.received_events_url)
-                                UserDetailRow(label = "Type:", value = user.type)
-                                UserDetailRow(label = "Site Admin:", value = user.site_admin.toString())
-                                UserDetailRow(label = "Name:", value = user.name ?: "N/A")
-                                UserDetailRow(label = "Company:", value = user.company ?: "N/A")
-                                UserDetailRow(label = "Blog:", value = user.blog ?: "N/A")
-                                UserDetailRow(label = "Location:", value = user.location ?: "N/A")
-                                UserDetailRow(label = "Email:", value = user.email ?: "N/A")
-                                UserDetailRow(label = "Hireable:", value = user.hireable?.toString() ?: "N/A")
-                                UserDetailRow(label = "Bio:", value = user.bio ?: "N/A")
-                                UserDetailRow(label = "Twitter Username:", value = user.twitter_username ?: "N/A")
-                                UserDetailRow(label = "Public Repos:", value = user.public_repos.toString())
-                                UserDetailRow(label = "Public Gists:", value = user.public_gists.toString())
-                                UserDetailRow(label = "Followers:", value = user.followers.toString())
-                                UserDetailRow(label = "Following:", value = user.following.toString())
-                                UserDetailRow(label = "Created At:", value = user.created_at)
-                                UserDetailRow(label = "Updated At:", value = user.updated_at)
+                                val colors = listOf(Color(0xFFE5E4E2), Color(0xe7edf9b))
+
+                                UserDetailRow(label = "Login:", value = user.login, backgroundColor = colors[0])
+                                UserDetailRow(label = "ID:", value = user.id.toString(), backgroundColor = colors[1])
+                                UserDetailRow(label = "Node ID:", value = user.node_id, backgroundColor = colors[0])
+                                UserDetailRow(label = "Avatar URL:", value = user.avatar_url, backgroundColor = colors[1])
+                                UserDetailRow(label = "URL:", value = user.url, backgroundColor = colors[0])
+                                UserDetailRow(label = "HTML URL:", value = user.html_url, backgroundColor = colors[1])
+                                UserDetailRow(label = "Followers URL:", value = user.followers_url, backgroundColor = colors[0])
+                                UserDetailRow(label = "Following URL:", value = user.following_url, backgroundColor = colors[1])
+                                UserDetailRow(label = "Gists URL:", value = user.gists_url, backgroundColor = colors[0])
+                                UserDetailRow(label = "Starred URL:", value = user.starred_url, backgroundColor = colors[1])
+                                UserDetailRow(label = "Subscriptions URL:", value = user.subscriptions_url, backgroundColor = colors[0])
+                                UserDetailRow(label = "Organizations URL:", value = user.organizations_url, backgroundColor = colors[1])
+                                UserDetailRow(label = "Repos URL:", value = user.repos_url, backgroundColor = colors[0])
+                                UserDetailRow(label = "Events URL:", value = user.events_url, backgroundColor = colors[1])
+                                UserDetailRow(label = "Received Events URL:", value = user.received_events_url, backgroundColor = colors[0])
+                                UserDetailRow(label = "Type:", value = user.type, backgroundColor = colors[1])
+                                UserDetailRow(label = "Site Admin:", value = user.site_admin.toString(), backgroundColor = colors[0])
+                                UserDetailRow(label = "Name:", value = user.name ?: "N/A", backgroundColor = colors[1])
+                                UserDetailRow(label = "Company:", value = user.company ?: "N/A", backgroundColor = colors[0])
+                                UserDetailRow(label = "Blog:", value = user.blog ?: "N/A", backgroundColor = colors[1])
+                                UserDetailRow(label = "Location:", value = user.location ?: "N/A", backgroundColor = colors[0])
+                                UserDetailRow(label = "Email:", value = user.email ?: "N/A", backgroundColor = colors[1])
+                                UserDetailRow(label = "Hireable:", value = user.hireable?.toString() ?: "N/A", backgroundColor = colors[0])
+                                UserDetailRow(label = "Bio:", value = user.bio ?: "N/A", backgroundColor = colors[1])
+                                UserDetailRow(label = "Twitter Username:", value = user.twitter_username ?: "N/A", backgroundColor = colors[0])
+                                UserDetailRow(label = "Public Repos:", value = user.public_repos.toString(), backgroundColor = colors[1])
+                                UserDetailRow(label = "Public Gists:", value = user.public_gists.toString(), backgroundColor = colors[0])
+                                UserDetailRow(label = "Followers:", value = user.followers.toString(), backgroundColor = colors[1])
+                                UserDetailRow(label = "Following:", value = user.following.toString(), backgroundColor = colors[0])
+                                UserDetailRow(label = "Created At:", value = user.created_at, backgroundColor = colors[1])
+                                UserDetailRow(label = "Updated At:", value = user.updated_at, backgroundColor = colors[0])
                             }
                         }
                     }
@@ -123,24 +124,23 @@ fun DetailsScreen(
     }
 }
 
-// Custom composable for displaying user details with an icon
 @Composable
-fun UserDetailRow(label: String, value: String) {
+fun UserDetailRow(label: String, value: String, backgroundColor: Color) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp), // Reduced vertical padding
+            .background(backgroundColor)
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-
-        Spacer(modifier = Modifier.width(8.dp))
-
         Text(
             text = label,
-            style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold) // Smaller text size
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.weight(1f)
         )
         Text(
             text = value,
-            style = MaterialTheme.typography.body2 // Smaller text size
+            modifier = Modifier.weight(2f)
         )
     }
 }
