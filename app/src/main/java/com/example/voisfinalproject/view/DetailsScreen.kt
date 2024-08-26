@@ -118,7 +118,7 @@ fun DetailsScreen(
                     }
                 }
             } else {
-                CircularProgressIndicator()
+                CircularProgressIndicator(color= primaryColor)
             }
         }
     }
