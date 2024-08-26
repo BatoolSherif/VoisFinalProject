@@ -1,6 +1,7 @@
 package com.example.voisfinalproject.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -20,7 +22,6 @@ import coil.compose.rememberImagePainter
 import com.example.voisfinalproject.viewmodel.DetailsViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-
 @Composable
 fun DetailsScreen(
     username: String,
@@ -29,6 +30,8 @@ fun DetailsScreen(
 ) {
     val userDetails by detailsViewModel.userDetails
     val primaryColor = Color(0xFFd03a3b)
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+    val boxHeight = screenHeight / 6
 
     LaunchedEffect(username) {
         detailsViewModel.fetchUserDetails(username)
@@ -51,8 +54,7 @@ fun DetailsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp),
+                .padding(paddingValues),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -62,63 +64,72 @@ fun DetailsScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         item {
+                            // Avatar Section
                             Column(
-                                modifier = Modifier.padding(16.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Image(
-                                    painter = rememberImagePainter(user.avatar_url),
-                                    contentDescription = null,
+                            )
+                            {
+                                Box(
                                     modifier = Modifier
-                                        .size(100.dp)
-                                        .clip(CircleShape),
-                                    contentScale = ContentScale.Crop
+                                        .fillMaxWidth(),
+
+                                    contentAlignment = Alignment.Center
                                 )
+                                {
+                                    Image(
+                                        painter = rememberImagePainter(user.avatar_url),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(100.dp)
+                                            .clip(CircleShape),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                }
 
                                 Spacer(modifier = Modifier.height(16.dp))
-
-                                val colors = listOf(Color(0xFFE5E4E2), Color(0xe7edf9b))
-
-                                UserDetailRow(label = "Login:", value = user.login, backgroundColor = colors[0])
-                                UserDetailRow(label = "ID:", value = user.id.toString(), backgroundColor = colors[1])
-                                UserDetailRow(label = "Node ID:", value = user.node_id, backgroundColor = colors[0])
-                                UserDetailRow(label = "Avatar URL:", value = user.avatar_url, backgroundColor = colors[1])
-                                UserDetailRow(label = "URL:", value = user.url, backgroundColor = colors[0])
-                                UserDetailRow(label = "HTML URL:", value = user.html_url, backgroundColor = colors[1])
-                                UserDetailRow(label = "Followers URL:", value = user.followers_url, backgroundColor = colors[0])
-                                UserDetailRow(label = "Following URL:", value = user.following_url, backgroundColor = colors[1])
-                                UserDetailRow(label = "Gists URL:", value = user.gists_url, backgroundColor = colors[0])
-                                UserDetailRow(label = "Starred URL:", value = user.starred_url, backgroundColor = colors[1])
-                                UserDetailRow(label = "Subscriptions URL:", value = user.subscriptions_url, backgroundColor = colors[0])
-                                UserDetailRow(label = "Organizations URL:", value = user.organizations_url, backgroundColor = colors[1])
-                                UserDetailRow(label = "Repos URL:", value = user.repos_url, backgroundColor = colors[0])
-                                UserDetailRow(label = "Events URL:", value = user.events_url, backgroundColor = colors[1])
-                                UserDetailRow(label = "Received Events URL:", value = user.received_events_url, backgroundColor = colors[0])
-                                UserDetailRow(label = "Type:", value = user.type, backgroundColor = colors[1])
-                                UserDetailRow(label = "Site Admin:", value = user.site_admin.toString(), backgroundColor = colors[0])
-                                UserDetailRow(label = "Name:", value = user.name ?: "N/A", backgroundColor = colors[1])
-                                UserDetailRow(label = "Company:", value = user.company ?: "N/A", backgroundColor = colors[0])
-                                UserDetailRow(label = "Blog:", value = user.blog ?: "N/A", backgroundColor = colors[1])
-                                UserDetailRow(label = "Location:", value = user.location ?: "N/A", backgroundColor = colors[0])
-                                UserDetailRow(label = "Email:", value = user.email ?: "N/A", backgroundColor = colors[1])
-                                UserDetailRow(label = "Hireable:", value = user.hireable?.toString() ?: "N/A", backgroundColor = colors[0])
-                                UserDetailRow(label = "Bio:", value = user.bio ?: "N/A", backgroundColor = colors[1])
-                                UserDetailRow(label = "Twitter Username:", value = user.twitter_username ?: "N/A", backgroundColor = colors[0])
-                                UserDetailRow(label = "Public Repos:", value = user.public_repos.toString(), backgroundColor = colors[1])
-                                UserDetailRow(label = "Public Gists:", value = user.public_gists.toString(), backgroundColor = colors[0])
-                                UserDetailRow(label = "Followers:", value = user.followers.toString(), backgroundColor = colors[1])
-                                UserDetailRow(label = "Following:", value = user.following.toString(), backgroundColor = colors[0])
-                                UserDetailRow(label = "Created At:", value = user.created_at, backgroundColor = colors[1])
-                                UserDetailRow(label = "Updated At:", value = user.updated_at, backgroundColor = colors[0])
                             }
+                        }
+                        // Table Section
+                        item {
+                            UserDetailRow(label = "Login:", value = user.login, backgroundColor = Color(0xFFf2f2f2))
+                            UserDetailRow(label = "ID:", value = user.id.toString(), backgroundColor = Color(0xFFffffff))
+                            UserDetailRow(label = "Node ID:", value = user.node_id, backgroundColor = Color(0xFFf2f2f2))
+                            UserDetailRow(label = "Avatar URL:", value = user.avatar_url, backgroundColor = Color(0xFFffffff))
+                            UserDetailRow(label = "URL:", value = user.url, backgroundColor = Color(0xFFf2f2f2))
+                            UserDetailRow(label = "HTML URL:", value = user.html_url, backgroundColor = Color(0xFFffffff))
+                            UserDetailRow(label = "Followers URL:", value = user.followers_url, backgroundColor = Color(0xFFf2f2f2))
+                            UserDetailRow(label = "Following URL:", value = user.following_url, backgroundColor = Color(0xFFffffff))
+                            UserDetailRow(label = "Gists URL:", value = user.gists_url, backgroundColor = Color(0xFFf2f2f2))
+                            UserDetailRow(label = "Starred URL:", value = user.starred_url, backgroundColor = Color(0xFFffffff))
+                            UserDetailRow(label = "Subscriptions URL:", value = user.subscriptions_url, backgroundColor = Color(0xFFf2f2f2))
+                            UserDetailRow(label = "Organizations URL:", value = user.organizations_url, backgroundColor = Color(0xFFffffff))
+                            UserDetailRow(label = "Repos URL:", value = user.repos_url, backgroundColor = Color(0xFFf2f2f2))
+                            UserDetailRow(label = "Events URL:", value = user.events_url, backgroundColor = Color(0xFFffffff))
+                            UserDetailRow(label = "Received Events URL:", value = user.received_events_url, backgroundColor = Color(0xFFf2f2f2))
+                            UserDetailRow(label = "Type:", value = user.type, backgroundColor = Color(0xFFffffff))
+                            UserDetailRow(label = "Site Admin:", value = user.site_admin.toString(), backgroundColor = Color(0xFFf2f2f2))
+                            UserDetailRow(label = "Name:", value = user.name ?: "N/A", backgroundColor = Color(0xFFffffff))
+                            UserDetailRow(label = "Company:", value = user.company ?: "N/A", backgroundColor = Color(0xFFf2f2f2))
+                            UserDetailRow(label = "Blog:", value = user.blog ?: "N/A", backgroundColor = Color(0xFFffffff))
+                            UserDetailRow(label = "Location:", value = user.location ?: "N/A", backgroundColor = Color(0xFFf2f2f2))
+                            UserDetailRow(label = "Email:", value = user.email ?: "N/A", backgroundColor = Color(0xFFffffff))
+                            UserDetailRow(label = "Hireable:", value = user.hireable?.toString() ?: "N/A", backgroundColor = Color(0xFFf2f2f2))
+                            UserDetailRow(label = "Bio:", value = user.bio ?: "N/A", backgroundColor = Color(0xFFffffff))
+                            UserDetailRow(label = "Twitter Username:", value = user.twitter_username ?: "N/A", backgroundColor = Color(0xFFf2f2f2))
+                            UserDetailRow(label = "Public Repos:", value = user.public_repos.toString(), backgroundColor = Color(0xFFffffff))
+                            UserDetailRow(label = "Public Gists:", value = user.public_gists.toString(), backgroundColor = Color(0xFFf2f2f2))
+                            UserDetailRow(label = "Followers:", value = user.followers.toString(), backgroundColor = Color(0xFFffffff))
+                            UserDetailRow(label = "Following:", value = user.following.toString(), backgroundColor = Color(0xFFf2f2f2))
+                            UserDetailRow(label = "Created At:", value = user.created_at, backgroundColor = Color(0xFFffffff))
+                            UserDetailRow(label = "Updated At:", value = user.updated_at, backgroundColor = Color(0xFFf2f2f2))
                         }
                     }
                 }
             } else {
-                CircularProgressIndicator(color= primaryColor)
+                CircularProgressIndicator(color = primaryColor)
             }
         }
     }
@@ -130,6 +141,7 @@ fun UserDetailRow(label: String, value: String, backgroundColor: Color) {
         modifier = Modifier
             .fillMaxWidth()
             .background(backgroundColor)
+            .border(1.dp, Color(0xFFdee2e6))
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
