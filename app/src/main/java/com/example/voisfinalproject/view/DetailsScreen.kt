@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
@@ -24,10 +25,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.voisfinalproject.viewmodel.DetailsViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 
 @Composable
 fun DetailsScreen(
     username: String,
+    navController: NavController, // Add NavController parameter
     detailsViewModel: DetailsViewModel = viewModel()
 ) {
     val userDetails by detailsViewModel.userDetails
@@ -42,7 +45,12 @@ fun DetailsScreen(
             TopAppBar(
                 title = { Text("User Details") },
                 backgroundColor = primaryColor, // Set color for AppBar
-                contentColor = Color.White
+                contentColor = Color.White,
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    }
+                }
             )
         }
     ) { paddingValues ->
@@ -105,18 +113,17 @@ fun UserDetailRow(icon: ImageVector, label: String, value: String) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp), // Reduced vertical padding
-//        verticalAlignment = Alignment.CenterVertically
     ) {
 
         Spacer(modifier = Modifier.width(8.dp))
 
-            Text(
-                text = label,
-                style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold) // Smaller text size
-            )
-            Text(
-                text = value,
-                style = MaterialTheme.typography.body2 // Smaller text size
-            )
-        }
+        Text(
+            text = label,
+            style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold) // Smaller text size
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.body2 // Smaller text size
+        )
+    }
 }

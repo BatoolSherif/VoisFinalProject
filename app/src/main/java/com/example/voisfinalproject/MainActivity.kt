@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                         composable("details/{username}") { backStackEntry ->
                             val username = backStackEntry.arguments?.getString("username")
                             username?.let {
-                                DetailsScreen(username = it)
+                                DetailsScreen(username = it, navController = navController)
                             }
                         }
                     }
